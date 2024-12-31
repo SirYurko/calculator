@@ -32,11 +32,6 @@ button {
     border-radius: 3px;
 }
 
-#button0 {
-    width: 105px;
-    grid-column: span 2; /* Кнопка займає два стовпці. */
-    margin-right: 5px ;
-}
 
 #result {
     background-color: #4a4a4a49;
