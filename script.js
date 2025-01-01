@@ -26,8 +26,11 @@ let buttons = document.querySelectorAll('button')
 // дозволяє вводити значення в resultSpace
 buttons.forEach(function(button){ 
     button.addEventListener('click', function(){
-
-        if(resultSpace.textContent === '0'){
+        if(isCalculated){
+            resultSpace.textContent = this.textContent;
+            isCalculated = false;
+        }
+        else if(resultSpace.textContent === '0' || resultSpace.textContent === 'Error'){
             resultSpace.textContent = this.textContent;    
         }else{
             resultSpace.textContent += this.textContent;
@@ -39,7 +42,39 @@ buttons.forEach(function(button){
 function clear(){
     buttonClear.addEventListener('click', function(){
         resultSpace.textContent = '0';
-    })
+    });
 }
 
 clear()
+
+
+let isCalculated = false;
+
+function calculateResult(){
+    try{
+        // Отримуємо текст з resultSpace
+        let expression = resultSpace.textContent;
+
+        console.log("Expression:", expression)
+        expression = expression.replace('=', '')
+
+        //Перевіряємо, чи є текст коректним виразом
+        if(!/^[0-9+\-*/. ]+$/.test(expression)){
+            throw new Error("Invalid expression");
+        }
+
+
+        // Використовуємо eval для обчислення виразу
+        let result = eval(expression);
+
+        // Оновлюємо resultSpace з результатом
+        resultSpace.textContent = result;
+        isCalculated = true;
+    } catch (error) {
+        resultSpace.textContent = "Error";
+        console.error('Invalid expression', error)
+    }
+}
+
+buttonEquals.addEventListener('click', calculateResult);
+
